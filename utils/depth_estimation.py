@@ -28,6 +28,8 @@ class DepthEstimator:
         depth_map = (depth_map - depth_map.min()) / (depth_map.max() - depth_map.min())
         depth_map = (depth_map * 255).astype("uint8")
 
+        return depth_map
+
 if __name__=="__main__":
     image = cv2.imread('/content/drive/MyDrive/3_ground_rack/DJI_0785.JPG')
     print(image.shape)

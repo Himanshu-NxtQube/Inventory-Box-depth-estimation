@@ -11,10 +11,10 @@ class DepthEstimator:
         self.processor = AutoProcessor.from_pretrained("apple/DepthPro-hf")
         self.model = AutoModelForDepthEstimation.from_pretrained("apple/DepthPro-hf").to(device)
     
+    def get_depth_map(self,image):
         # Convert BGR to RGB and converting into numpy array
-        self.image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-    def get_depth_map(self):
         inputs = self.processor(images=self.image, return_tensors="pt").to(self.device)
 
         with torch.no_grad():
@@ -46,4 +46,3 @@ if __name__=="__main__":
     # Convert to uint8 before saving
     # depth_map = (depth_map * 255).astype("uint8")
     cv2.imwrite("depth_map.png", depth_map)
-

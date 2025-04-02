@@ -3,7 +3,7 @@ from ultralytics import YOLO
 import cv2
 import numpy as np
 
-class detections:
+class Detections:
     def __init__(self,image):
         self.blue_bar_detect_model_path = 'models/blue_bar_detection.pt'
         self.orange_bar_detect_model_path = 'models/orange_bar_detection.pt'
@@ -60,8 +60,11 @@ class detections:
         y_mid = self.img_height // 2
 
         # Filter detections for upper and lower halves
-        upper_detections = [(box[1]+box[3])/2 for box in detections if (box[1] <= y_mid and (box[4] > confidence_threshold))]  # y1 <= y_mid
-        lower_detections = [(box[1]+box[3])/2 for box in detections if (box[1] >= y_mid and (box[4] > confidence_threshold))]  # y1 >= y_mid
+        # upper_detections = [(box[1]+box[3])/2 for box in detections if (box[1] <= y_mid and (box[4] > confidence_threshold))]  # y1 <= y_mid
+        # lower_detections = [(box[1]+box[3])/2 for box in detections if (box[1] >= y_mid and (box[4] > confidence_threshold))]  # y1 >= y_mid
+
+        upper_detections = [np.mean((box[1],box[3])) for box in detections if (box[1] <= y_mid and (box[4] > confidence_threshold))]  # y1 <= y_mid
+        lower_detections = [np.mean((box[1],box[3])) for box in detections if (box[1] >= y_mid and (box[4] > confidence_threshold))]  # y1 >= y_mid
 
         # Find nearest to upper edge
         if upper_detections:
@@ -121,19 +124,19 @@ class detections:
             # if ((self.upper_roi_y > box_mid_y) and (box_mid_x > self.lower_roi_y)):
             #     box_coordinates.append([x1,y1,x2,y2])
 
-            box_coordinates.append([x1,y1,x2,y2])
+            box_coordinates.append([int(x1),int(y1),int(x2),int(y2)])
 
 
 
         return box_coordinates
 
 if __name__=='__main__':
-    image = cv2.imread("test images/DJI_0782.JPG")
+    image = cv2.imread("test images/DJI_0788.JPG")
     resized_image = cv2.resize(image,(1080,720))
 
     h,w,_ = resized_image.shape
 
-    obj = detections(resized_image)
+    obj = Detections(resized_image)
     # left_x, right_x = obj.get_blue_bar_boundaries()
     # upper_x, lower_x = obj. get_orange_bar_boundaries()
     box_coordinates = obj.get_box_boundaries()
@@ -144,10 +147,16 @@ if __name__=='__main__':
     # cv2.line(resized_image, (0,upper_x), (w,upper_x),(0,255,0),3)
     # cv2.line(resized_image, (0,lower_x), (w,lower_x),(0,255,0),3)
 
-    for box_coordinate in box_coordinates:
-        x1, y1, x2, y2 = box_coordinate
-        cv2.rectangle(resized_image,(int(x1),int(y1)),(int(x2),int(y2)),color=(0, 255, 255),thickness=3)
 
-    cv2.imshow("Bar Detections",resized_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    print(f'{obj.left_roi_x = }')
+    print(f'{obj.right_roi_x = }')
+    print(f'{obj.upper_roi_y = }')
+    print(f'{obj.lower_roi_y = }')
+
+    # for box_coordinate in box_coordinates:
+    #     x1, y1, x2, y2 = box_coordinate
+    #     cv2.rectangle(resized_image,(int(x1),int(y1)),(int(x2),int(y2)),color=(0, 255, 255),thickness=3)
+
+    # cv2.imshow("Bar Detections",resized_image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()

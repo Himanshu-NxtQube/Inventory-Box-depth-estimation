@@ -29,7 +29,7 @@ def plot_boxes_with_depths(image,categorization_list,output_path):
 
 if __name__ == '__main__':
 	os.makedirs(OUTPUT_DIR,exist_ok=True)
-	box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv')
+	box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','w')
 	box_counts_csv.write("Image Path,Front Boxes,Back Boxes,Total Boxes")
 
 	for filename in os.listdir(IMAGE_DIR):
@@ -57,4 +57,6 @@ if __name__ == '__main__':
 							os.path.join(OUTPUT_DIR,'Depth-boxes-'+filename))
 		
 		box_counts_csv.write(f"{image_path},{box_counts['front_box_count']},{box_counts['back_boxes_count']},{box_counts['total_boxes_count']}")
+		
+	box_counts_csv.close()
 	

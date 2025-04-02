@@ -30,11 +30,13 @@ def plot_boxes_with_depths(image,categorization_list,output_path):
 if __name__ == '__main__':
 	os.makedirs(OUTPUT_DIR,exist_ok=True)
 	box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','w')
-	box_counts_csv.write("Image Path,Front Boxes,Back Boxes,Total Boxes")
+	box_counts_csv.write("Image Path,Front Boxes,Back Boxes,Total Boxes\n")
+	box_counts_csv.close()
 
 	for filename in os.listdir(IMAGE_DIR):
+		box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','a')
 		image_path = os.path.join(IMAGE_DIR, filename)
-		image = cv2.imread()
+		image = cv2.imread(image_path)
 		resized_image = cv2.resize(image,(1080,720))
 
 		# depth_map = cv2.imread(f"test images/Depth Maps/depth_map{i}.png",cv2.IMREAD_GRAYSCALE)
@@ -56,7 +58,7 @@ if __name__ == '__main__':
 							depth_analyzer.categorization_list,
 							os.path.join(OUTPUT_DIR,'Depth-boxes-'+filename))
 		
-		box_counts_csv.write(f"{image_path},{box_counts['front_box_count']},{box_counts['back_boxes_count']},{box_counts['total_boxes_count']}")
-		
-	box_counts_csv.close()
+		box_counts_csv.write(f"{image_path},{box_counts['front_box_count']},{box_counts['back_box_count']},{box_counts['total_box_count']}\n")
+
+		box_counts_csv.close()
 	

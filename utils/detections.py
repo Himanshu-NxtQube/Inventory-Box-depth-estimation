@@ -4,12 +4,10 @@ import cv2
 import numpy as np
 
 class Detections:
-    def __init__(self,image):
+    def __init__(self):
         self.blue_bar_detect_model_path = 'models/blue_bar_detection.pt'
         self.orange_bar_detect_model_path = 'models/orange_bar_detection.pt'
         self.box_detect_model_path = 'models/gbox_detection.pt'
-        self.image = image
-        self.img_height, self.img_width,_ = image.shape # returns heigth, width, no. of color channels
 
     def __get_blue_bar_boundaries(self,confidence_threshold=0.3,merge_threshold=50):
         blue_bar_detect_model = YOLO(self.blue_bar_detect_model_path)
@@ -63,8 +61,8 @@ class Detections:
         # upper_detections = [(box[1]+box[3])/2 for box in detections if (box[1] <= y_mid and (box[4] > confidence_threshold))]  # y1 <= y_mid
         # lower_detections = [(box[1]+box[3])/2 for box in detections if (box[1] >= y_mid and (box[4] > confidence_threshold))]  # y1 >= y_mid
 
-        upper_detections = [np.mean((box[1],box[3])) for box in detections if (box[1] <= y_mid and (box[4] > confidence_threshold))]  # y1 <= y_mid
-        lower_detections = [np.mean((box[1],box[3])) for box in detections if (box[1] >= y_mid and (box[4] > confidence_threshold))]  # y1 >= y_mid
+        upper_detections = [np.mean((int(box[1]),int(box[3]))) for box in detections if (box[1] <= y_mid and (box[4] > confidence_threshold))]  # y1 <= y_mid
+        lower_detections = [np.mean((int(box[1]),int(box[3]))) for box in detections if (box[1] >= y_mid and (box[4] > confidence_threshold))]  # y1 >= y_mid
 
         # Find nearest to upper edge
         if upper_detections:
@@ -83,7 +81,9 @@ class Detections:
         self.upper_roi_y = int(upper_roi_y)
         self.lower_roi_y = int(lower_roi_y)
 
-    def get_box_boundaries(self,confidence_threshold=0.5):
+    def get_box_boundaries(self,image,confidence_threshold=0.5):
+        self.image = image
+        self.img_height, self.img_width,_ = image.shape # returns heigth, width, no. of color channels
         self.__get_blue_bar_boundaries()
         self.__get_orange_bar_boundaries()
 
@@ -96,8 +96,8 @@ class Detections:
         for bbox in box_detections[0].boxes.data:
             x1,y1,x2,y2,conf,_ = bbox # x1,y1,x2,y2,confidence,class
 
-            box_mid_x = np.mean((x1,x2))
-            box_mid_y = np.mean((y1,y2))
+            box_mid_x = np.mean((int(x1),int(x2)))
+            box_mid_y = np.mean((int(y1),int(y2)))
 
             # print(f'{(x1,y1,x2,y2)=}')
             # print(f'{box_mid_x=}')

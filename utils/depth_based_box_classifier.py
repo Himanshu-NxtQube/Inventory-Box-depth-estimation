@@ -57,7 +57,7 @@ class BoxDepthAnalyzer:
                 self.categorization_list.append((box_coordinate,box_depth,1))
                 self.front_boxes+=1
 
-        self.total_boxes = (self.front_boxes * 1) + (self.back_boxes * 2)
+        self.total_boxes = (self.front_boxes * 2) + (self.back_boxes * 1)
         return {"front_box_count": self.front_boxes,
                 "back_box_count": self.back_boxes,
                 "total_box_count": self.total_boxes}

@@ -5,7 +5,7 @@ from transformers import AutoProcessor, AutoModelForDepthEstimation
 
 
 class DepthEstimator:
-    def __init__(self,image):
+    def __init__(self):
         self.device = device="cuda" if torch.cuda.is_available() else "cpu"
 
         self.processor = AutoProcessor.from_pretrained("apple/DepthPro-hf")
@@ -15,14 +15,14 @@ class DepthEstimator:
         # Convert BGR to RGB and converting into numpy array
         image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-        inputs = self.processor(images=self.image, return_tensors="pt").to(self.device)
+        inputs = self.processor(images=image, return_tensors="pt").to(self.device)
 
         with torch.no_grad():
             outputs = self.model(**inputs)
             depth_map = outputs.predicted_depth.squeeze().cpu().numpy()
 
         # Resize depth map to match input image size
-        depth_map = cv2.resize(depth_map, (self.image.width, self.image.height))
+        depth_map = cv2.resize(depth_map, (image.width, image.height))
 
         # Normalize depth values between 0 and 1, then scale to 0-255
         depth_map = (depth_map - depth_map.min()) / (depth_map.max() - depth_map.min())

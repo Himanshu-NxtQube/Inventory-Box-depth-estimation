@@ -42,6 +42,9 @@ class detections:
             else:  # Detection is on the right side
                 left_roi_x = 0  # Use left edge of image
                 right_roi_x = blue_bar_center
+        else:
+            left_roi_x = 0
+            right_roi_x = self.img_width - 1
 
         # return int(left_roi_x), int(right_roi_x)
         self.left_roi_x = int(left_roi_x)

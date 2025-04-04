@@ -51,7 +51,13 @@ if __name__ == '__main__':
 			print(f"Failed to read: {filename}")
 			continue
 
-		resized_image = cv2.resize(image,(1080,720))
+		scale_percent = 66.6666  # e.g. reduce to 50% of original size
+		width = int(image.shape[1] * scale_percent / 100)
+		height = int(image.shape[0] * scale_percent / 100)
+		dim = (width, height)
+
+		# Resize image
+		resized_image = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
 
 		# depth_map = cv2.imread(f"test images/Depth Maps/depth_map{i}.png",cv2.IMREAD_GRAYSCALE)
 		

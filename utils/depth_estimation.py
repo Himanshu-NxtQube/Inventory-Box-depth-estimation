@@ -1,5 +1,6 @@
 import torch
 import cv2
+import numpy as np
 from PIL import Image
 from transformers import AutoProcessor, AutoModelForDepthEstimation
 from transformers import pipeline
@@ -41,8 +42,8 @@ class DepthEstimator:
         elif self.model == "depth_anything_v2":
             
 
-            depth_map = depth_estimator(image)['depth']
-            return depth_map
+            depth_map = self.depth_estimator(image)['depth']
+            return np.array(depth_map)
 
 if __name__=="__main__":
     image = cv2.imread('/content/drive/MyDrive/3_ground_rack/DJI_0785.JPG')

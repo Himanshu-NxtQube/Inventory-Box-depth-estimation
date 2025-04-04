@@ -32,6 +32,9 @@ if __name__ == '__main__':
 	box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','w')
 	box_counts_csv.write("Image Path,Front Boxes,Back Boxes,Total Boxes\n")
 	box_counts_csv.close()
+	depth_estimator = DepthEstimator()
+	detector = Detections()
+	depth_analyzer = BoxDepthAnalyzer()
 
 	for filename in os.listdir(IMAGE_DIR):
 		box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','a')
@@ -40,9 +43,7 @@ if __name__ == '__main__':
 		resized_image = cv2.resize(image,(1080,720))
 
 		# depth_map = cv2.imread(f"test images/Depth Maps/depth_map{i}.png",cv2.IMREAD_GRAYSCALE)
-		depth_estimator = DepthEstimator()
-		detector = Detections()
-		depth_analyzer = BoxDepthAnalyzer()
+		
 
 		depth_map = depth_estimator.get_depth_map(resized_image)
 		box_coordinates = detector.get_box_boundaries(resized_image)

@@ -6,10 +6,10 @@ class BoxDepthAnalyzer:
         self.GYthreashold = GYthreashold
         self.YRthreashold = YRthreashold
         self.categorization_list = []
-        self.front_boxes = 0
-        self.back_boxes = 0
 
     def count_boxes(self,depth_map,left_roi_x,right_roi_x,upper_roi_y,lower_roi_y,box_coordinates):
+        self.front_boxes = 0
+        self.back_boxes = 0
         height, width = depth_map.shape
 
         left_depth = depth_map[height//2][left_roi_x] if left_roi_x != 0 else -1

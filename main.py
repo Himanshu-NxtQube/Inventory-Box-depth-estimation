@@ -27,6 +27,9 @@ def plot_boxes_with_depths(image,categorization_list,output_path):
 
 	cv2.imwrite(output_path,image)
 
+# Define image file extensions
+image_extensions = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".webp"}
+
 if __name__ == '__main__':
 	os.makedirs(OUTPUT_DIR,exist_ok=True)
 	box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','w')
@@ -37,9 +40,17 @@ if __name__ == '__main__':
 	depth_analyzer = BoxDepthAnalyzer()
 
 	for filename in os.listdir(IMAGE_DIR):
+		if os.path.splitext(filename)[1].lower() not in image_extensions:
+			continue
+
 		box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','a')
 		image_path = os.path.join(IMAGE_DIR, filename)
 		image = cv2.imread(image_path)
+
+		if image is None:
+			print(f"Failed to read: {filename}")
+			continue
+
 		resized_image = cv2.resize(image,(1080,720))
 
 		# depth_map = cv2.imread(f"test images/Depth Maps/depth_map{i}.png",cv2.IMREAD_GRAYSCALE)

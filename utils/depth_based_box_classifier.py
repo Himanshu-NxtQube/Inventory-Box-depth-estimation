@@ -1,7 +1,7 @@
 import numpy as np
 
 class BoxDepthAnalyzer:
-    def __init__(self,GYthreashold=20,YRthreashold=65):
+    def __init__(self,GYthreashold=25,YRthreashold=60):
         # self.depth_map = depth_map
         self.GYthreashold = GYthreashold
         self.YRthreashold = YRthreashold

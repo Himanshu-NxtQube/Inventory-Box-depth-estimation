@@ -23,7 +23,7 @@ class DepthEstimator:
         # Convert BGR to RGB and converting into numpy array
         image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-        if self.model == "apple_depth-pro":
+        if self.model == "apple_depth_pro":
 
             inputs = self.apple_depth_processor(images=image, return_tensors="pt").to(self.device)
 

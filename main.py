@@ -51,7 +51,7 @@ if __name__ == '__main__':
 			print(f"Failed to read: {filename}")
 			continue
 
-		scale_percent = 66.6666  # e.g. reduce to 50% of original size
+		scale_percent = 33.3333  
 		width = int(image.shape[1] * scale_percent / 100)
 		height = int(image.shape[0] * scale_percent / 100)
 		dim = (width, height)

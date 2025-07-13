@@ -42,7 +42,8 @@ if __name__ == '__main__':
 	for filename in os.listdir(IMAGE_DIR):
 		if os.path.splitext(filename)[1].lower() not in image_extensions:
 			continue
-
+        
+        print("Processing file:", filename)
 		box_counts_csv = open(OUTPUT_DIR+'/'+'box counts.csv','a')
 		image_path = os.path.join(IMAGE_DIR, filename)
 		image = cv2.imread(image_path)

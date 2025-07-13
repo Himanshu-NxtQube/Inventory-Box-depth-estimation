@@ -59,6 +59,7 @@ if __name__ == '__main__':
 
 		depth_map = depth_estimator.get_depth_map(resized_image)
 		box_coordinates = detector.get_box_boundaries(resized_image)
+        print("Box_coordinates:", box_coordinates)
 
 		box_counts = depth_analyzer.count_boxes(depth_map = depth_map,
 												left_roi_x = detector.left_roi_x,
